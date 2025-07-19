@@ -11,6 +11,7 @@ module SolidQueue
         has_one :ready_execution
         has_one :claimed_execution
 
+        # Job Lifecycle 2: After the job is created, it is prepared for execution.
         after_create :prepare_for_execution
 
         scope :finished, -> { where.not(finished_at: nil) }
@@ -57,6 +58,7 @@ module SolidQueue
         define_method("#{status}?") { public_send("#{status}_execution").present? }
       end
 
+      # Job Lifecycle 3: After the job is created, it is prepared for execution.
       def prepare_for_execution
         if due? then dispatch
         else
@@ -65,6 +67,7 @@ module SolidQueue
       end
 
       def dispatch
+        # Job Lifecycle 4: If we are able to acquire a concurrency lock, we proceed to ready the job for execution.
         if acquire_concurrency_lock then ready
         else
           handle_concurrency_conflict
@@ -101,6 +104,7 @@ module SolidQueue
 
       private
         def ready
+          # Job Lifecycle 11 - Create a ReadyExecution record for the job.
           ReadyExecution.create_or_find_by!(job_id: id)
         end
 

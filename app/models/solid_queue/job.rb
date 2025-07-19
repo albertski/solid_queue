@@ -4,6 +4,7 @@ module SolidQueue
   class Job < Record
     class EnqueueError < StandardError; end
 
+    # Job Lifecycle 1: When MyJob.perform_later(args) is called, the job is executed.
     include Executable, Clearable, Recurrable
 
     serialize :arguments, coder: JSON
