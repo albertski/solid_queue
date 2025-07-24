@@ -7,9 +7,11 @@ module SolidQueue::Processes
     attr_writer :mode
 
     def start
+      # Worker Lifecycle 3 - We start the worker lifecycle by booting
       boot
 
       if running_async?
+        # Worker Lifecycle 4  - Start running
         @thread = create_thread { run }
       else
         run

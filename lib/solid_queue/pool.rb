@@ -20,6 +20,7 @@ module SolidQueue
 
       Concurrent::Promises.future_on(executor, execution) do |thread_execution|
         wrap_in_app_executor do
+          # Worker Lifecycle 8 - Perform the job in the thread pool
           thread_execution.perform
         ensure
           available_threads.increment
