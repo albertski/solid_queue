@@ -40,7 +40,9 @@ module SolidQueue
       end
 
       def wait
+        # Job Lifecycle 7 - Check if a semaphore exists for the job's concurrency key.
         if semaphore = Semaphore.find_by(key: key)
+          # Job Lifecycle 8 - Check if the semaphore's value is greater than 0 and attempt to decrement it.
           semaphore.value > 0 && attempt_decrement
         else
           attempt_creation
@@ -67,10 +69,12 @@ module SolidQueue
         end
 
         def attempt_decrement
+          # Job Lifecycle 9 - Decement the semaphore's value and update its expiration time.
           Semaphore.available.where(key: key).update_all([ "value = value - 1, expires_at = ?", expires_at ]) > 0
         end
 
         def attempt_increment
+          # Job Lifecycle 10 - Increment the semaphore's value and update its expiration time.
           Semaphore.where(key: key, value: ...limit).update_all([ "value = value + 1, expires_at = ?", expires_at ]) > 0
         end
 

@@ -39,8 +39,11 @@ module SolidQueue
         end
 
         def acquire_concurrency_lock
+          # Job Lifecycle 5 - If our job had something like:  limits_concurrency to: 2, key: ->(contact) { contact.account }, duration: 5.minutes
+          # then we would use the key to acquire a lock.
           return true unless concurrency_limited?
 
+          # Job Lifecycle 6 - The method delegates to SolidQueue::Semaphore.wait(self), passing the job instance
           Semaphore.wait(self)
         end
 
