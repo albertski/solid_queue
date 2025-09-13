@@ -81,6 +81,7 @@ module SolidQueue
         end
 
         pid = fork do
+          # Worker Lifecycle 1 - For each process the supervisor will start the worker lifecycle
           process_instance.start
         end
 

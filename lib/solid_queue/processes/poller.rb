@@ -18,6 +18,7 @@ module SolidQueue::Processes
 
     private
       def run
+        # Worker Lifecycle 5  - Start loop
         start_loop
       end
 
@@ -26,6 +27,7 @@ module SolidQueue::Processes
           break if shutting_down?
 
           delay = wrap_in_app_executor do
+            # Worker Lifecycle 6  - Start polling
             poll
           end
 

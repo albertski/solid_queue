@@ -16,6 +16,7 @@ module SolidQueue
       # Ensure that the queues array is deep frozen to prevent accidental modification
       @queues = Array(options[:queues]).map(&:freeze).freeze
 
+      # Worker Lifecycle 2 - Setup up pool based on the number of threads set.
       @pool = Pool.new(options[:threads], on_idle: -> { wake_up })
 
       super(**options)
@@ -27,6 +28,7 @@ module SolidQueue
 
     private
       def poll
+        # Worker Lifecycle 7 - Claim executions from the queues and post them to the thread pool
         claim_executions.then do |executions|
           executions.each do |execution|
             pool.post(execution)
