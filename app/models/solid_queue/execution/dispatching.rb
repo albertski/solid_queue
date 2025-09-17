@@ -9,6 +9,7 @@ module SolidQueue
         def dispatch_jobs(job_ids)
           jobs = Job.where(id: job_ids)
 
+          # Dispatcher Lifecycle - 7 - Dispatches jobs and then deletes from executions
           Job.dispatch_all(jobs).map(&:id).then do |dispatched_job_ids|
             where(id: where(job_id: dispatched_job_ids).pluck(:id)).delete_all
           end

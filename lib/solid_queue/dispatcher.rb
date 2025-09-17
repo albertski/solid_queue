@@ -29,6 +29,7 @@ module SolidQueue
       attr_reader :concurrency_maintenance
 
       def poll
+        # Dispatcher Lifecycle - 4 - Dispatching next batch
         batch = dispatch_next_batch
 
         batch.zero? ? polling_interval : 0.seconds
@@ -36,6 +37,7 @@ module SolidQueue
 
       def dispatch_next_batch
         with_polling_volume do
+          # Dispatcher Lifecycle - 5 - Dispatching next batch
           ScheduledExecution.dispatch_next_batch(batch_size)
         end
       end

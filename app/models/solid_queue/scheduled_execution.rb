@@ -13,6 +13,7 @@ module SolidQueue
     class << self
       def dispatch_next_batch(batch_size)
         transaction do
+          # Dispatcher Lifecycle - 6 - Finds the next available jobs and dispatches them
           job_ids = next_batch(batch_size).non_blocking_lock.pluck(:job_id)
           if job_ids.empty? then 0
           else

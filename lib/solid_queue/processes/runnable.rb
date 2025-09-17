@@ -7,6 +7,7 @@ module SolidQueue::Processes
     attr_writer :mode
 
     def start
+      # Dispatcher Lifecycle - 1 - Dispatcher started
       boot
 
       if running_async?
