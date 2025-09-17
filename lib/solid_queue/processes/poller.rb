@@ -18,6 +18,7 @@ module SolidQueue::Processes
 
     private
       def run
+        # Dispatcher Lifecycle - 2 -  Polling loop started
         start_loop
       end
 
@@ -26,6 +27,7 @@ module SolidQueue::Processes
           break if shutting_down?
 
           delay = wrap_in_app_executor do
+            # Dispatcher Lifecycle - 3 - Polling loop
             poll
           end
 

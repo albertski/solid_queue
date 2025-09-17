@@ -23,6 +23,7 @@ module SolidQueue
         end
 
         def dispatch_all(jobs)
+          # Dispatcher Lifecycle - 8 - Dispatches jobs with and without concurrency limits
           with_concurrency_limits, without_concurrency_limits = jobs.partition(&:concurrency_limited?)
 
           dispatch_all_at_once(without_concurrency_limits)
