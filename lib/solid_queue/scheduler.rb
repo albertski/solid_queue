@@ -8,7 +8,9 @@ module SolidQueue
     attr_reader :recurring_schedule
 
     after_boot :run_start_hooks
+    # Scheduler Lifecycle - 2 - Schedule recurreing tasks
     after_boot :schedule_recurring_tasks
+    # Scheduler Lifecycle - 4 - Unschedule recurring tasks
     before_shutdown :unschedule_recurring_tasks
     before_shutdown :run_stop_hooks
     after_shutdown :run_exit_hooks
@@ -28,6 +30,7 @@ module SolidQueue
 
       def run
         loop do
+          # Scheduler Lifecycle - 3 - Schedule loop
           break if shutting_down?
 
           interruptible_sleep(SLEEP_INTERVAL)
