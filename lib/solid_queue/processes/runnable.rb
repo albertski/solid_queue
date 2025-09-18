@@ -7,6 +7,7 @@ module SolidQueue::Processes
     attr_writer :mode
 
     def start
+      # Scheduler Lifecycle - 1 - Schedule started
       boot
 
       if running_async?
